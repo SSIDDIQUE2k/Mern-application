@@ -8,7 +8,9 @@ router.post('/auth', authUser);
 router.post('/register', registerUser);
 router.post('/logout', logoutUser);
 router.get('/profile', getUserProfile);
+
 router.put('/update', updateUserProfile);
+
 
 
 
