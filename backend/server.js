@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -16,6 +17,8 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 // Use the userRoutes for any requests to the /api/users path
+
+app.use(cookieParser());
 app.use('/api/users', userRoutes);
 
 // Define a route for the root URL    
