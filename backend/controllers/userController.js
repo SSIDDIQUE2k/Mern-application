@@ -1,5 +1,6 @@
 import aysncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
+import generateToken from '../utils/generateToken.js';
 
 // Description: This file contains the routes for the user model
 //route post /api/users/auth
@@ -24,6 +25,7 @@ const registerUser = aysncHandler(async (req, res) => {  // eslint-disable-line 
         name, email, password
         });
         if (user) {
+            generateToken(res, user._id);
             res.status(201).json({
                 _id: user._id,
                 name: user.name,
@@ -62,3 +64,4 @@ const updateUserProfile = aysncHandler(async (req, res) => {  // eslint-disable-
 
 
     export { authUser, registerUser, logoutUser, getUserProfile, updateUserProfile };
+
