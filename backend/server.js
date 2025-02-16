@@ -1,11 +1,14 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
-
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+import connectDB from './config/db.js';
 
 dotenv.config(); // Load environment variables from .env file
-import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+
 const port = process.env.PORT || 5000;
+
+connectDB(); // Connect to the MongoDB database
 const app = express(); // Create an instance of an Express application
 
 // Middleware to parse JSON request bodies
@@ -29,3 +32,4 @@ app.use(errorHandler);
 app.listen(port, () => { 
     console.log(`Server is running on port ${port}`);
 });
+
