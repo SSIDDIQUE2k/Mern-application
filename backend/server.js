@@ -14,6 +14,7 @@ const app = express(); // Create an instance of an Express application
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: true }));
 // Use the userRoutes for any requests to the /api/users path
 app.use('/api/users', userRoutes);
 
