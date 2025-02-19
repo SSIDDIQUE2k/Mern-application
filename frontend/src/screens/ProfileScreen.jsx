@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
+import { useUpdateUserMutation } from '../slices/userApiSlice';
+import { setCredentials } from '../slices/authSlice';
 
 const ProfileScreen = () => {
   const [email, setEmail] = useState('');
@@ -12,11 +14,38 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    console.log('submit');
-  };
+  const { userInfo } = useSelector((state) => state.auth);
 
+useEffect(() => {
+  setName(userInfo.name);
+  setEmail(userInfo.email);
+}, [userInfo.email, userInfo.name]);
+
+
+const dispatch = useDispatch();
+
+const [updateProfile, { isLoading }] = useUpdateUserMutation();
+
+const submitHandler = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+    } else {
+      try {
+        const res = await updateProfile({
+          _id: userInfo._id,
+          name,
+          email,
+          password,
+        }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        toast.success('Profile updated successfully');
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
+  };
+  
   return (
     <FormContainer>
       <h1>Update Profile</h1>
